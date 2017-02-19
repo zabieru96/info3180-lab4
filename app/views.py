@@ -25,6 +25,12 @@ def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
 
+@app.route('/filelisting')
+def file_listing():
+    if not session.get('logged_in'):
+        abort(401)
+    return render_template('listing.html', files= dirListing())
+
 @app.route('/add-file', methods=['POST', 'GET'])
 def add_file():
     if not session.get('logged_in'):
@@ -89,6 +95,18 @@ def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
 
+##
+# Helper Methods
+##
+def dirListing():
+    rootdir = os.getcwd()
+    print rootdir
+    fileList = []
+    for subdir, dirs, files in os.walk(rootdir + '/app/static/uploads'):
+        for file in files:
+            fileList.append(file)
+    return fileList
+    
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0",port="8080")

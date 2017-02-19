@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<h1 class="page-header">Files</h1>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-success">
+      <ul class="flashes">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endwith %}
+
+<ul class="flashes">
+  {% for file in files %}
+    {% if ('.jpg' in file) or ('.jpeg' in file) %}
+        <li>
+            <img class='img-thumbnail' src="{{ url_for('static', filename = 'uploads/' + file) }}"></img>
+        </li>
+    {% else %}
+        <li>{{ file }}</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+{% endblock %}
